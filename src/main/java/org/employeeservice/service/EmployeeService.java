@@ -12,7 +12,7 @@ public interface EmployeeService {
 
     EmployeeResponse createEmployee(CreateEmployeeRequest request) throws EmployeeAlreadyExistException;
 
-    EmployeeResponse updateEmployee(UpdateEmployeeRequest request, Long employeeId) throws ResourceNotFoundException;
+    EmployeeResponse updateEmployee(UpdateEmployeeRequest request, Long employeeId) throws ResourceNotFoundException, EmployeeAlreadyExistException;
 
     EmployeeDetailsResponse getEmployeeDetailsById(Long employeeId) throws ResourceNotFoundException;
 

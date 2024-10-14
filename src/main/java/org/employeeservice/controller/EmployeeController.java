@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Validated
 @RequestMapping("/v1/api/employees")
+@CrossOrigin(origins = "*")
 @Tag(name = "Employee Controller", description = "Employee controller")
 public class EmployeeController {
 
@@ -82,7 +83,7 @@ public class EmployeeController {
     @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema(implementation = ErrorDetails.class), mediaType = "application/json")})
     @PutMapping("/{employeeId}")
     public EmployeeResponse updateEmployee(@PathVariable Long employeeId,
-                                           @RequestBody UpdateEmployeeRequest request) throws ResourceNotFoundException {
+                                           @RequestBody UpdateEmployeeRequest request) throws ResourceNotFoundException, EmployeeAlreadyExistException {
         return this.employeeService.updateEmployee(request, employeeId);
     }
 }

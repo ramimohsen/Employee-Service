@@ -43,13 +43,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public EmployeeResponse updateEmployee(UpdateEmployeeRequest request, Long employeeId) throws ResourceNotFoundException {
+    public EmployeeResponse updateEmployee(UpdateEmployeeRequest request, Long employeeId) throws ResourceNotFoundException, EmployeeAlreadyExistException {
 
         Employee employee = this.employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND));
 
         if (request.getEmail() != null) {
+            if (Boolean.TRUE.equals(this.employeeRepository.existsByEmail(request.getEmail()))) {
+                throw new EmployeeAlreadyExistException("Employee already exist");
+            }
             employee.setEmail(request.getEmail());
+
         }
         if (request.getFirstName() != null) {
             employee.setFirstName(request.getFirstName());
