@@ -12,12 +12,16 @@ import org.employeeservice.exception.custom.InvalidSupervisorAssignmentException
 import org.employeeservice.exception.custom.ResourceNotFoundException;
 import org.employeeservice.repository.EmployeeRepository;
 import org.employeeservice.service.EmployeeService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
+
+    private static final String NOT_FOUND = "Employee Not Found";
 
     private final EmployeeRepository employeeRepository;
 
@@ -45,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponse updateEmployee(UpdateEmployeeRequest request, Long employeeId) throws ResourceNotFoundException {
 
         Employee employee = this.employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee Does Not Exist"));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND));
 
         if (request.getEmail() != null) {
             employee.setEmail(request.getEmail());
@@ -66,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse getEmployeeById(Long employeeId) throws ResourceNotFoundException {
         return this.employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee Does Not Exist"))
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND))
                 .toResponse();
     }
 
@@ -75,7 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(Long employeeId) throws EmployeeHasSubordinatesException, ResourceNotFoundException {
 
         Employee employee = this.employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee Does Not Exist"));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND));
 
         if (!employee.getSubordinates().isEmpty()) {
             throw new EmployeeHasSubordinatesException("Cannot delete employee with active subordinates");
@@ -114,5 +118,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .employeeId(saved.getEmployeeId())
                 .supervisorId(supervisorId)
                 .build();
+    }
+
+    @Override
+    public Page<EmployeeResponse> getAllEmployees(Pageable pageable) {
+        return this.employeeRepository.findAll(pageable).map(Employee::toResponse);
     }
 }

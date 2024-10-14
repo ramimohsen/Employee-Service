@@ -8,6 +8,8 @@ import org.employeeservice.exception.custom.EmployeeAlreadyExistException;
 import org.employeeservice.exception.custom.EmployeeHasSubordinatesException;
 import org.employeeservice.exception.custom.InvalidSupervisorAssignmentException;
 import org.employeeservice.exception.custom.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface EmployeeService {
 
@@ -21,4 +23,5 @@ public interface EmployeeService {
 
     AssignEmployeeResponse assignEmployee(Long employeeId, Long supervisorId) throws ResourceNotFoundException, InvalidSupervisorAssignmentException;
 
+    Page<EmployeeResponse> getAllEmployees(Pageable pageable);
 }
