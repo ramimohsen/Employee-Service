@@ -38,11 +38,11 @@ class EmployeeControllerTest {
     void testGetEmployeeDetailsById() throws Exception {
 
         Long employeeId = 1L;
-        EmployeeResponse employeeResponse = new EmployeeResponse(employeeId, "John", "Doe", "john.doe@example.com", "Developer", null);
-        EmployeeResponse supervisorResponse = new EmployeeResponse(2L, "Jane", "Smith", "jane.smith@example.com", "Manager", null);
+        EmployeeResponse employeeResponse = new EmployeeResponse(employeeId, "John", "Doe", "john.doe@example.com", "Developer", "x", null);
+        EmployeeResponse supervisorResponse = new EmployeeResponse(2L, "Jane", "Smith", "jane.smith@example.com", "Manager", "x", null);
 
         List<EmployeeResponse> subordinates = List.of(
-                new EmployeeResponse(3L, "Sam", "Brown", "sam.brown@example.com", "Intern", null)
+                new EmployeeResponse(3L, "Sam", "Brown", "sam.brown@example.com", "Intern", "x", null)
         );
 
         EmployeeDetailsResponse employeeDetailsResponse = EmployeeDetailsResponse.builder()
@@ -67,7 +67,7 @@ class EmployeeControllerTest {
     @Test
     void testGetAllEmployees() throws Exception {
         Page<EmployeeResponse> employeePage = new PageImpl<>(List.of(
-                new EmployeeResponse(1L, "John", "Doe", "john.doe@example.com", "Developer", null)
+                new EmployeeResponse(1L, "John", "Doe", "john.doe@example.com", "Developer", "x", null)
         ));
 
         given(employeeService.getAllEmployees(any())).willReturn(employeePage);
@@ -81,7 +81,7 @@ class EmployeeControllerTest {
     @Test
     void testCreateEmployee() throws Exception {
         CreateEmployeeRequest createEmployeeRequest = new CreateEmployeeRequest("John", "Doe", "john.doe@example.com", "Developer");
-        EmployeeResponse employeeResponse = new EmployeeResponse(1L, "John", "Doe", "john.doe@example.com", "Developer", null);
+        EmployeeResponse employeeResponse = new EmployeeResponse(1L, "John", "Doe", "john.doe@example.com", "Developer", "x", null);
 
         given(employeeService.createEmployee(createEmployeeRequest)).willReturn(employeeResponse);
 
@@ -134,7 +134,7 @@ class EmployeeControllerTest {
     @Test
     void testUpdateEmployee() throws Exception {
         UpdateEmployeeRequest updateEmployeeRequest = new UpdateEmployeeRequest("John", "Doe", "john.doe@example.com", "Senior Developer");
-        EmployeeResponse employeeResponse = new EmployeeResponse(1L, "John", "Doe", "john.doe@example.com", "Senior Developer", null);
+        EmployeeResponse employeeResponse = new EmployeeResponse(1L, "John", "Doe", "john.doe@example.com", "Senior Developer", "x", null);
 
         given(employeeService.updateEmployee(updateEmployeeRequest, 1L)).willReturn(employeeResponse);
 
