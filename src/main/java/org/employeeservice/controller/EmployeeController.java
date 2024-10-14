@@ -30,12 +30,12 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @Operation(summary = "Get employee by ID")
+    @Operation(summary = "Get employee details by ID")
     @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = EmployeeResponse.class), mediaType = "application/json")})
     @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema(implementation = ErrorDetails.class), mediaType = "application/json")})
     @GetMapping("/{employeeId}")
-    public EmployeeResponse getEmployeeById(@PathVariable("employeeId") Long employeeId) throws ResourceNotFoundException {
-        return this.employeeService.getEmployeeById(employeeId);
+    public EmployeeDetailsResponse getEmployeeDetailsById(@PathVariable("employeeId") Long employeeId) throws ResourceNotFoundException {
+        return this.employeeService.getEmployeeDetailsById(employeeId);
     }
 
     @Operation(summary = "Get all employees pageable")

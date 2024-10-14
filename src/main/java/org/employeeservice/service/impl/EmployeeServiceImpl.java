@@ -1,10 +1,7 @@
 package org.employeeservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.employeeservice.dto.AssignEmployeeResponse;
-import org.employeeservice.dto.CreateEmployeeRequest;
-import org.employeeservice.dto.EmployeeResponse;
-import org.employeeservice.dto.UpdateEmployeeRequest;
+import org.employeeservice.dto.*;
 import org.employeeservice.entity.Employee;
 import org.employeeservice.exception.custom.EmployeeAlreadyExistException;
 import org.employeeservice.exception.custom.EmployeeHasSubordinatesException;
@@ -68,10 +65,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse getEmployeeById(Long employeeId) throws ResourceNotFoundException {
-        return this.employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND))
-                .toResponse();
+    public EmployeeDetailsResponse getEmployeeDetailsById(Long employeeId) throws ResourceNotFoundException {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND));
+
+        EmployeeResponse employeeResponse = employee.toResponse();
+
+        return EmployeeDetailsResponse
+                .builder()
+                .employee(employeeResponse)
+                .supervisor(employee.getSupervisor() != null ? employee.getSupervisor().toResponse() : null)
+                .subordinates(employee.getSubordinates().stream().map(Employee::toResponse).toList())
+                .build();
     }
 
     @Transactional
