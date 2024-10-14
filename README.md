@@ -132,7 +132,7 @@ To run the application, ensure you have Docker installed and follow these steps:
     cd <repository-directory>
     ```
 
-2. **Start postgres container service from docker compose file **:
+2. **Start postgres container service from docker compose file**:
 
 3. **Run maven install command to build the app image**
     - Run the following command:
