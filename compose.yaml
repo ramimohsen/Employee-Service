@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: employee_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - employee_network
+
+  transfer_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: employee-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/employee_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - employee_network
+
+volumes:
+  postgres_data:
+
+networks:
+  employee_network:
