@@ -132,13 +132,22 @@ To run the application, ensure you have Docker installed and follow these steps:
     cd <repository-directory>
     ```
 
-2. **Start the Application**:
+2. **Start postgres container service from docker compose file **:
+
+3. **Run maven install command to build the app image**
+    - Run the following command:
+    ```bash
+       cd <repository-directory>
+       mvn install  
+    ```
+
+4. **Start the Application**:
     - Run the following command to start the services:
     ```bash
     docker-compose up --build
     ```
 
-3. **Access the Application**:
+5. **Access the Application**:
     - Once the application is up and running, you can access it at `http://localhost:8080/api/employees`.
 
 ## Swagger Documentation

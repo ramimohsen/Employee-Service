@@ -116,7 +116,11 @@ class EmployeeControllerTest {
     @Test
     void testAssignEmployeeToSupervisor() throws Exception {
         AssignEmployeeRequest assignEmployeeRequest = new AssignEmployeeRequest(2L); // Supervisor ID
-        AssignEmployeeResponse assignEmployeeResponse = new AssignEmployeeResponse(1L, 2L);
+        AssignEmployeeResponse assignEmployeeResponse = AssignEmployeeResponse
+                .builder()
+                .employeeId(1L)
+                .supervisorId(2L)
+                .build();
 
         given(employeeService.assignEmployee(1L, 2L)).willReturn(assignEmployeeResponse);
 
