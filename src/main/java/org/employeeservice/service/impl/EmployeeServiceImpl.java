@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -48,20 +50,22 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = this.employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND));
 
-        if (request.getEmail() != null) {
-            if (Boolean.TRUE.equals(this.employeeRepository.existsByEmail(request.getEmail()))) {
-                throw new EmployeeAlreadyExistException("Employee already exist");
+        if (request.getEmail() != null && !request.getEmail().trim().equals(employee.getEmail())) {
+            if (this.employeeRepository.existsByEmail(request.getEmail().trim())) {
+                throw new EmployeeAlreadyExistException("Employee with this email already exists");
             }
-            employee.setEmail(request.getEmail());
-
+            employee.setEmail(request.getEmail().trim());
         }
-        if (request.getFirstName() != null) {
+
+        if (request.getFirstName() != null && !request.getFirstName().equals(employee.getFirstName())) {
             employee.setFirstName(request.getFirstName());
         }
-        if (request.getLastName() != null) {
+
+        if (request.getLastName() != null && !request.getLastName().equals(employee.getLastName())) {
             employee.setLastName(request.getLastName());
         }
-        if (request.getPosition() != null) {
+
+        if (request.getPosition() != null && !request.getPosition().equals(employee.getPosition())) {
             employee.setPosition(request.getPosition());
         }
 
@@ -132,5 +136,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Page<EmployeeResponse> getAllEmployees(Pageable pageable) {
         return this.employeeRepository.findAll(pageable).map(Employee::toResponse);
+    }
+
+    @Override
+    public List<EmployeeResponse> searchEmployeeByEmail(String email) {
+
+        List<Employee> employees = employeeRepository.findByEmailContainingIgnoreCase(email);
+
+        return employees.stream()
+                .map(Employee::toResponse).toList();
     }
 }

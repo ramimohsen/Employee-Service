@@ -8,6 +8,8 @@ import org.employeeservice.exception.custom.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface EmployeeService {
 
     EmployeeResponse createEmployee(CreateEmployeeRequest request) throws EmployeeAlreadyExistException;
@@ -21,4 +23,6 @@ public interface EmployeeService {
     AssignEmployeeResponse assignEmployee(Long employeeId, Long supervisorId) throws ResourceNotFoundException, InvalidSupervisorAssignmentException;
 
     Page<EmployeeResponse> getAllEmployees(Pageable pageable);
+
+    List<EmployeeResponse> searchEmployeeByEmail(String email);
 }

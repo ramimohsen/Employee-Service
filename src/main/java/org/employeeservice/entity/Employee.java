@@ -29,7 +29,7 @@ public class Employee {
 
     private String position;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supervisor_id")
     private Employee supervisor;
 
@@ -47,6 +47,7 @@ public class Employee {
                 .lastName(lastName)
                 .email(email)
                 .position(position)
+                .supervisorName(supervisor != null ? supervisor.getFirstName().concat(" ").concat(supervisor.getLastName()) : null)
                 .createdAt(createdAt)
                 .build();
     }

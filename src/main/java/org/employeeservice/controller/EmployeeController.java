@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Validated
@@ -85,5 +87,14 @@ public class EmployeeController {
     public EmployeeResponse updateEmployee(@PathVariable Long employeeId,
                                            @RequestBody UpdateEmployeeRequest request) throws ResourceNotFoundException, EmployeeAlreadyExistException {
         return this.employeeService.updateEmployee(request, employeeId);
+    }
+
+    @Operation(summary = "Search By Email")
+    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = EmployeeResponse.class), mediaType = "application/json")})
+    @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema(implementation = ErrorDetails.class), mediaType = "application/json")})
+    @GetMapping("/search")
+    public List<EmployeeResponse> searchEmployeesByEmail(
+            @RequestParam String email) {
+        return this.employeeService.searchEmployeeByEmail(email);
     }
 }

@@ -23,5 +23,7 @@ public class EmployeeResponse {
 
     private String position;
 
+    private String supervisorName;
+
     private LocalDateTime createdAt;
 }

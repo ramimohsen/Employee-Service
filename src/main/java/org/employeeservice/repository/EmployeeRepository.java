@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
@@ -27,5 +29,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
                 WHERE employee_id = :supervisorId;
             """, nativeQuery = true)
     boolean hasCircularSupervisorRelationship(@Param("employeeId") Long employeeId, @Param("supervisorId") Long supervisorId);
+
+    List<Employee> findByEmailContainingIgnoreCase(String email);
 
 }
