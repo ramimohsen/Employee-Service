@@ -17,5 +17,5 @@ public class AssignEmployeeResponse {
     private Long supervisorId;
 
     @Builder.Default
-    private static final String MESSAGE = "Employee Assigned Successfully";
+    private final String message = "Employee Assigned Successfully";
 }
