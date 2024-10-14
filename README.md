@@ -152,6 +152,12 @@ After running the application, you can access the Swagger UI at:
 - **Supervisor Assignment**: An employee cannot supervise themselves.
 - **Prevent Circular Assignment**: An employee cannot be assigned as a supervisor of another employee who is already under their supervision, directly or indirectly.
 
+
+## Database Management
+
+This service uses **Liquibase** for database schema generation and data seeding. It automatically handles the creation of necessary tables and inserts initial data during application startup.
+
+
 ## License
 
 This project is licensed under the MIT License.
